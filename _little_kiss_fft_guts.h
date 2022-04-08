@@ -47,13 +47,6 @@ struct kiss_fft_state{
 #define SAMP_MAX INT16_MAX
 #define SAMP_MIN INT16_MIN
 
-#if defined(CHECK_OVERFLOW)
-#  define CHECK_OVERFLOW_OP(a,op,b)  \
-    if ( (SAMPPROD)(a) op (SAMPPROD)(b) > SAMP_MAX || (SAMPPROD)(a) op (SAMPPROD)(b) < SAMP_MIN ) { \
-        KISS_FFT_WARNING("overflow (%d " #op" %d) = %ld", (a),(b),(SAMPPROD)(a) op (SAMPPROD)(b)); }
-#endif
-
-
 #define smul(a,b) ( (SAMPPROD)(a)*(b) )
 #define sround( x )  (kiss_fft_scalar)( ( (x) + (1<<(FRACBITS-1)) ) >> FRACBITS )
 
@@ -75,33 +68,21 @@ struct kiss_fft_state{
         (c).i =  sround( smul( (c).i , s ) ) ; }while(0)
 
 
-#ifndef CHECK_OVERFLOW_OP
-#  define CHECK_OVERFLOW_OP(a,op,b) /* noop */
-#endif
-
 #define  C_ADD( res, a,b)\
     do { \
-        CHECK_OVERFLOW_OP((a).r,+,(b).r)\
-        CHECK_OVERFLOW_OP((a).i,+,(b).i)\
         (res).r=(a).r+(b).r;  (res).i=(a).i+(b).i; \
     }while(0)
 #define  C_SUB( res, a,b)\
     do { \
-        CHECK_OVERFLOW_OP((a).r,-,(b).r)\
-        CHECK_OVERFLOW_OP((a).i,-,(b).i)\
         (res).r=(a).r-(b).r;  (res).i=(a).i-(b).i; \
     }while(0)
 #define C_ADDTO( res , a)\
     do { \
-        CHECK_OVERFLOW_OP((res).r,+,(a).r)\
-        CHECK_OVERFLOW_OP((res).i,+,(a).i)\
         (res).r += (a).r;  (res).i += (a).i;\
     }while(0)
 
 #define C_SUBFROM( res , a)\
     do {\
-        CHECK_OVERFLOW_OP((res).r,-,(a).r)\
-        CHECK_OVERFLOW_OP((res).i,-,(a).i)\
         (res).r -= (a).r;  (res).i -= (a).i; \
     }while(0)
 
