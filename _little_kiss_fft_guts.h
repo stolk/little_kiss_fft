@@ -1,3 +1,5 @@
+// LITTLE KISS FFT by Bram Stolk
+
 /*
  *  Copyright (c) 2003-2010, Mark Borgerding. All rights reserved.
  *  This file is part of KISS FFT - https://github.com/mborgerding/kissfft
@@ -6,7 +8,7 @@
  *  See COPYING file for more information.
  */
 
-/* kiss_fft.h
+/* little_kiss_fft.h
    defines kiss_fft_scalar as either short or a float type
    and defines
    typedef struct { kiss_fft_scalar r; kiss_fft_scalar i; }kiss_fft_cpx; */
@@ -52,23 +54,23 @@ struct kiss_fft_state{
 #endif
 
 
-#   define smul(a,b) ( (SAMPPROD)(a)*(b) )
-#   define sround( x )  (kiss_fft_scalar)( ( (x) + (1<<(FRACBITS-1)) ) >> FRACBITS )
+#define smul(a,b) ( (SAMPPROD)(a)*(b) )
+#define sround( x )  (kiss_fft_scalar)( ( (x) + (1<<(FRACBITS-1)) ) >> FRACBITS )
 
-#   define S_MUL(a,b) sround( smul(a,b) )
+#define S_MUL(a,b) sround( smul(a,b) )
 
-#   define C_MUL(m,a,b) \
+#define C_MUL(m,a,b) \
       do{ (m).r = sround( smul((a).r,(b).r) - smul((a).i,(b).i) ); \
           (m).i = sround( smul((a).r,(b).i) + smul((a).i,(b).r) ); }while(0)
 
-#   define DIVSCALAR(x,k) \
+#define DIVSCALAR(x,k) \
     (x) = sround( smul(  x, SAMP_MAX/k ) )
 
-#   define C_FIXDIV(c,div) \
+#define C_FIXDIV(c,div) \
     do {    DIVSCALAR( (c).r , div);  \
         DIVSCALAR( (c).i  , div); }while (0)
 
-#   define C_MULBYSCALAR( c, s ) \
+#define C_MULBYSCALAR( c, s ) \
     do{ (c).r =  sround( smul( (c).r , s ) ) ;\
         (c).i =  sround( smul( (c).i , s ) ) ; }while(0)
 
@@ -115,8 +117,5 @@ struct kiss_fft_state{
     }while(0)
 
 
-#define  KISS_FFT_TMP_ALLOC(nbytes) malloc(nbytes)
-#define  KISS_FFT_TMP_FREE(ptr) free(ptr)
-
-#endif /* _kiss_fft_guts_h */
+#endif /* _little_kiss_fft_guts_h */
 
