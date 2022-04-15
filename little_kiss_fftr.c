@@ -25,7 +25,7 @@ kiss_fftr_cfg kiss_fftr_alloc(int nfft,int inverse_fft,void * mem,size_t * lenme
     kiss_fftr_cfg st = NULL;
     size_t subsize = 0, memneeded;
 
-    assert(nfft&1 == 0); // Must be even!
+    assert((nfft&1) == 0); // Must be even!
     nfft >>= 1;
 
     kiss_fft_alloc (nfft, inverse_fft, NULL, &subsize);
