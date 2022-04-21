@@ -1,4 +1,4 @@
-// LITTLE KISS FFT by Bram Stolk
+// LITTLE KISS FFT, μcontroller-friendly port by Bram Stolk of KISS FFT.
 
 /*
  *  Copyright (c) 2003-2010, Mark Borgerding. All rights reserved.
@@ -7,11 +7,6 @@
  *  SPDX-License-Identifier: BSD-3-Clause
  *  See COPYING file for more information.
  */
-
-/* little_kiss_fft.h
-   defines kiss_fft_scalar as either short or a float type
-   and defines
-   typedef struct { kiss_fft_scalar r; kiss_fft_scalar i; }kiss_fft_cpx; */
 
 #ifndef _kiss_fft_guts_h
 #define _kiss_fft_guts_h
@@ -41,11 +36,19 @@ struct kiss_fft_state{
    C_SUBFROM( res , a)  : res -= a
    C_ADDTO( res , a)    : res += a
  * */
+
 #include <stdint.h>
-#define FRACBITS 15
-#define SAMPPROD int32_t
-#define SAMP_MAX INT16_MAX
-#define SAMP_MIN INT16_MIN
+#if (FIXED_POINT==32)
+#	define FRACBITS 30 // was: 31 (Somehow this does not work!)
+#	define SAMPPROD int64_t
+#	define SAMP_MAX  1073741823 // was: INT32_MAX
+#	define SAMP_MIN -1073741824 // was: INT32_MIN
+#else
+#	define FRACBITS 15
+#	define SAMPPROD int32_t
+#	define SAMP_MAX INT16_MAX
+#	define SAMP_MIN INT16_MIN
+#endif
 
 #define smul(a,b) ( (SAMPPROD)(a)*(b) )
 #define sround( x )  (kiss_fft_scalar)( ( (x) + (1<<(FRACBITS-1)) ) >> FRACBITS )
@@ -87,8 +90,8 @@ struct kiss_fft_state{
     }while(0)
 
 
-#define KISS_FFT_COS(phase)  floor(.5+SAMP_MAX * cos (phase))
-#define KISS_FFT_SIN(phase)  floor(.5+SAMP_MAX * sin (phase))
+#define KISS_FFT_COS(phase)  floorf(.5+SAMP_MAX * cosf (phase))
+#define KISS_FFT_SIN(phase)  floorf(.5+SAMP_MAX * sinf (phase))
 #define HALF_OF(x) ((x)>>1)
 
 #define  kf_cexp(x,phase) \

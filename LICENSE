@@ -1,7 +1,7 @@
 BSD 3-Clause License
 
 Copyright (c) 2003-2010 Mark Borgerding
-Stripped down int16_t version for μcontrollers by Bram Stolk.
+Stripped down int16_t/int32_t version for μcontrollers by Bram Stolk.
 
 All rights reserved.
 

@@ -23,7 +23,11 @@ extern "C" {
 #endif
 
 
-#define kiss_fft_scalar int16_t
+#if (FIXED_POINT == 32)
+#	define kiss_fft_scalar int32_t
+#else	
+#	define kiss_fft_scalar int16_t
+#endif
 
 
 typedef struct {
