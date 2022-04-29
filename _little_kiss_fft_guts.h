@@ -13,6 +13,8 @@
 
 #include "little_kiss_fft.h"
 #include <limits.h>
+#include <stdint.h>
+
 
 #define MAXFACTORS 32
 /* e.g. an fft of length 128 has 4 factors
@@ -37,7 +39,6 @@ struct kiss_fft_state{
    C_ADDTO( res , a)    : res += a
  * */
 
-#include <stdint.h>
 #if (FIXED_POINT==32)
 #	define FRACBITS 30 // was: 31 (Somehow this does not work!)
 #	define SAMPPROD int64_t
@@ -102,4 +103,3 @@ struct kiss_fft_state{
 
 
 #endif /* _little_kiss_fft_guts_h */
-

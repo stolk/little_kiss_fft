@@ -22,6 +22,8 @@
 extern "C" {
 #endif
 
+#define FIXED_POINT 32
+
 
 #if (FIXED_POINT == 32)
 #	define kiss_fft_scalar int32_t
